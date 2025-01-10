@@ -5,4 +5,4 @@
 | admin_email    | Your chosen Admin email address |
 | admin_password | Your chosen Admin password      |
 
-[Next](./02_BCRegisterCustomer.md)
+[Next](./02_CreateCustomer.md)

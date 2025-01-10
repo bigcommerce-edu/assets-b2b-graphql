@@ -220,4 +220,4 @@ query {
 }
 ```
 
-[Next](../04_Lab_BigCommerceAPISetup/02_PostmanEnvironment.md)
+[Next](../../Module02/01_CompaniesAndAddresses/01_CompaniesAndAddresses.md)

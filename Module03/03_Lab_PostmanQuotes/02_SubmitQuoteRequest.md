@@ -33,7 +33,8 @@ mutation CreateQuote(
     $companyId: Int,
     $currency: CurrencyInputType!,
     $storeHash: String!,
-    $productList: [ProductInputType]!
+    $productList: [ProductInputType]!,
+    $channelId: Int
 ) {
     quoteCreate(
         quoteData: {
@@ -49,7 +50,8 @@ mutation CreateQuote(
             companyId: $companyId,
             currency: $currency,
             storeHash: $storeHash,
-            productList: $productList
+            productList: $productList,
+            channelId: $channelId
         }
     ) {
         quote {
@@ -129,7 +131,8 @@ Variables:
             "productName": "{{product2_name}}",
             "options": []
         }
-    ]
+    ],
+    "channelId": {{storefront_channel_id}}
 }
 ```
 

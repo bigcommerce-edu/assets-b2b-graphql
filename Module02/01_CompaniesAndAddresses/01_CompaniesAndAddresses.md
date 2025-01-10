@@ -2,6 +2,70 @@
 
 ## Company Registration
 
+**Create customer mutation:**
+
+```
+mutation CreateCustomer(
+    $storeHash: String!,
+    $email: String!,
+    $password: String,
+    $firstName: String!,
+    $lastName: String!,
+    $phone: String,
+    $channelId: Int
+) {
+    customerCreate(
+        customerData: {
+            storeHash: $storeHash,
+            email: $email,
+            firstName: $firstName,
+            lastName: $lastName,
+            phone: $phone,
+            originChannelId: $channelId,
+            channelIds: [$channelId],
+            authentication: {
+                forcePasswordReset: false,
+                newPassword: $password
+            }
+        }
+    ) {
+        customer {
+            id
+            email
+        }
+    }
+}
+```
+
+**Example variables:**
+
+```json
+{
+    "storeHash": "aaaaabbbbb",
+    "email": "johndoe@example.com",
+    "password": "Password123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "111-222-3333",
+    "channelId": 1
+}
+```
+
+**Example response:**
+
+```json
+{
+    "data": {
+        "customerCreate": {
+            "customer": {
+                "id": 5,
+                "email": "johndoe@example.com"
+            }
+        }
+    }
+}
+```
+
 **Create company mutation:**
 
 ```

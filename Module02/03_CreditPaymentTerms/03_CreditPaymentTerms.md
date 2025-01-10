@@ -62,4 +62,4 @@ query GetPaymentTerms(
 }
 ```
 
-[Next](../04_Lab_PostmanRegistrationLogin/01_RegisterCompany/01_CollectionVariables.md)
+[Next](../04_Lab_PostmanRegistrationLogin/01_PostmanSetup/01_PostmanSetup.md)
