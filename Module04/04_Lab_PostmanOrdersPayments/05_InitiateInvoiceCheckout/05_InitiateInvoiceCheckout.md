@@ -51,7 +51,7 @@ Variables:
 {
     "invoiceId": {{invoice_id}},
     "amount": "{{invoice_amount}}",
-    "currency": "USD"
+    "currency": "{{currency_code}}"
 }
 ```
 

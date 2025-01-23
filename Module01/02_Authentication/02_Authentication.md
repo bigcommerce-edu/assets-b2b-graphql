@@ -99,6 +99,37 @@ mutation {
 }
 ```
 
+## Syncing Logins with BigCommerce GraphQL
+
+**Example request:**
+
+```
+POST https://api-b2b.bigcommerce.com/api/io/auth/customers/storefront
+
+{
+  "customerId": 999,
+  "channelId": 1,
+  "customerAccessToken": {
+    "value": "<token value>",
+    "expires_at": "2024-12-31T00:00:00.0Z"
+  }
+}
+```
+
+**Example response:**
+
+```json
+{
+  "code": 200,
+  "data": {
+    "token": "eyJ0eX..."
+  },
+  "meta": {
+    "message": "success"
+  }
+}
+```
+
 ## Obtaining the Token from the Buyer Portal
 
 **Example call:**

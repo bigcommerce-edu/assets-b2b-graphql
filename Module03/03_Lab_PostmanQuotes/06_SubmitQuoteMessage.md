@@ -74,4 +74,4 @@ pm.test('Response includes quote with quote number', () => {
 });
 ```
 
-[Next](./06_CheckOutFromQuote.md)
+[Next](./07_CheckOutFromQuote.md)

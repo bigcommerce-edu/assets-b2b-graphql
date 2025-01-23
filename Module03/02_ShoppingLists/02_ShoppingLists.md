@@ -304,4 +304,4 @@ mutation SubmitShoppingList(
 }
 ```
 
-[Next](../03_Lab_PostmanQuotes/01_FetchProductDetails.md)
+[Next](../03_Lab_PostmanQuotes/01_FetchCurrencyDetails.md)

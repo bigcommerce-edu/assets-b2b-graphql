@@ -1,5 +1,61 @@
 # Quotes
 
+## Fetching Currency Details
+
+**Example request:**
+
+```
+query GetCurrencies(
+  $storeHash: String!,
+  $channelId: String!
+) {
+  currencies(
+    storeHash: $storeHash,
+    channelId: $channelId,
+  ) {
+    currencies {
+      currency_code,
+      currency_exchange_rate,
+      token,
+      decimal_token,
+      decimal_places,
+      token_location,
+      thousands_token,
+    },
+    channelCurrencies
+  }
+}
+```
+
+**Example response:**
+
+```json
+{
+    "data": {
+        "currencies": {
+            "currencies": [
+                {
+                    "currency_code": "USD",
+                    "currency_exchange_rate": "1.0000000000",
+                    "token": "$",
+                    "decimal_token": ".",
+                    "decimal_places": 2,
+                    "token_location": "left",
+                    "thousands_token": ","
+                }
+            ],
+            "channelCurrencies": {
+                "channel_id": 1,
+                "enabled_currencies": [
+                    "USD"
+                ],
+                "default_currency": "USD"
+            }
+        }
+    }
+}
+```
+
 ## Obtaining Product Details
 
 **Product search example:**
@@ -239,7 +295,15 @@ mutation CreateQuote(
         "phoneNumber": "111-222-3333"
     },
     "companyId": 11122233,
-    "currency": {},
+    "currency": {
+        "token": "$",
+        "location": "left",
+        "currencyCode": "USD",
+        "decimalToken": ".",
+        "decimalPlaces": 2,
+        "thousandsToken": ",",
+        "currencyExchangeRate": "1.0"
+    },
     "storeHash": "pki...",
     "productList": [
         {

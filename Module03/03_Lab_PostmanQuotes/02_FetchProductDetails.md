@@ -154,4 +154,4 @@ pm.collectionVariables.unset('products_price_total');
 pm.collectionVariables.set('products_price_total', priceTotal);
 ```
 
-[Next](./02_SubmitQuoteRequest.md)
+[Next](./03_SubmitQuoteRequest.md)

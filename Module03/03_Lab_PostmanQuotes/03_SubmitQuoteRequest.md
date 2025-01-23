@@ -104,7 +104,15 @@ Variables:
         "phoneNumber": "111-222-3333"
     },
     "companyId": {{b2b_logged_in_company_id}},
-    "currency": {},
+    "currency": {
+        "token": "{{currency_token}}",
+        "location": "{{currency_token_location}}",
+        "currencyCode": "{{currency_code}}",
+        "decimalToken": "{{currency_decimal_token}}",
+        "decimalPlaces": {{currency_decimal_places}},
+        "thousandsToken": "{{currency_thousands_token}}",
+        "currencyExchangeRate": "{{currency_exchange_rate}}"
+    },
     "storeHash": "{{store_hash}}",
     "productList": [
         {
@@ -166,4 +174,4 @@ pm.collectionVariables.set('quote_id', parseInt(quote?.id));
 pm.collectionVariables.set('quote_created_at', quote?.createdAt);
 ```
 
-[Next](./03_GetQuotes.md)
+[Next](./04_GetQuotes.md)
