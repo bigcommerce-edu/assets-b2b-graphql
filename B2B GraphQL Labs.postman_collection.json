@@ -127,8 +127,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateCompany(\n    $storeHash: String!,\n    $customerId: String!,\n    $companyName: String!,\n    $companyEmail: String,\n    $addressLine1: String!,\n    $city: String!,\n    $country: String!,\n    $state: String!,\n    $zipCode: String!\n) {\n    companyCreate(\n        companyData: {\n            storeHash: $storeHash,\n            customerId: $customerId,\n            companyName: $companyName,\n            companyEmail: $companyEmail,\n            addressLine1: $addressLine1,\n            city: $city,\n            country: $country,\n            state: $state,\n            zipCode: $zipCode\n        }\n    ) {\n        company {\n            id\n            companyName\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"customerId\": \"<Customer ID>\",\n    \"companyName\": \"John's Widgets\",\n    \"companyEmail\": \"johndoe@example.com\",\n    \"addressLine1\": \"987 Park Central East\",\n    \"city\": \"Austin\",\n    \"country\": \"United States\",\n    \"state\": \"Texas\",\n    \"zipCode\": \"78726\"\n}"
+								"query": "mutation CreateCompany(\n    $storeHash: String!,\n    $customerId: String!,\n    $companyName: String!,\n    $companyEmail: String,\n    $addressLine1: String!,\n    $city: String!,\n    $country: String!,\n    $state: String!,\n    $zipCode: String!,\n    $channelId: Int\n) {\n    companyCreate(\n        companyData: {\n            storeHash: $storeHash,\n            customerId: $customerId,\n            companyName: $companyName,\n            companyEmail: $companyEmail,\n            addressLine1: $addressLine1,\n            city: $city,\n            country: $country,\n            state: $state,\n            zipCode: $zipCode,\n            channelId: $channelId\n        }\n    ) {\n        company {\n            id\n            companyName\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"customerId\": \"<Customer ID>\",\n    \"companyName\": \"John's Widgets\",\n    \"companyEmail\": \"johndoe@example.com\",\n    \"addressLine1\": \"987 Park Central East\",\n    \"city\": \"Austin\",\n    \"country\": \"United States\",\n    \"state\": \"Texas\",\n    \"zipCode\": \"78726\",\n    \"channelId\": <Channel ID>\n}"
 							}
 						},
 						"url": {
@@ -210,8 +210,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\"\n}"
+								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!,\n    $channelId: Int\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password,\n            channelId: $channelId\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\",\n    \"channelId\": <Channel ID>\n}"
 							}
 						},
 						"url": {
@@ -417,8 +417,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateCompany(\n    $storeHash: String!,\n    $customerId: String!,\n    $companyName: String!,\n    $companyEmail: String,\n    $addressLine1: String!,\n    $city: String!,\n    $country: String!,\n    $state: String!,\n    $zipCode: String!\n) {\n    companyCreate(\n        companyData: {\n            storeHash: $storeHash,\n            customerId: $customerId,\n            companyName: $companyName,\n            companyEmail: $companyEmail,\n            addressLine1: $addressLine1,\n            city: $city,\n            country: $country,\n            state: $state,\n            zipCode: $zipCode\n        }\n    ) {\n        company {\n            id\n            companyName\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"customerId\": \"{{admin_customer_id}}\",\n    \"companyName\": \"John's Widgets\",\n    \"companyEmail\": \"johndoe@example.com\",\n    \"addressLine1\": \"987 Park Central East\",\n    \"city\": \"Austin\",\n    \"country\": \"United States\",\n    \"state\": \"Texas\",\n    \"zipCode\": \"78726\"\n}"
+								"query": "mutation CreateCompany(\n    $storeHash: String!,\n    $customerId: String!,\n    $companyName: String!,\n    $companyEmail: String,\n    $addressLine1: String!,\n    $city: String!,\n    $country: String!,\n    $state: String!,\n    $zipCode: String!,\n    $channelId: Int\n) {\n    companyCreate(\n        companyData: {\n            storeHash: $storeHash,\n            customerId: $customerId,\n            companyName: $companyName,\n            companyEmail: $companyEmail,\n            addressLine1: $addressLine1,\n            city: $city,\n            country: $country,\n            state: $state,\n            zipCode: $zipCode,\n            channelId: $channelId\n        }\n    ) {\n        company {\n            id\n            companyName\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"customerId\": \"{{admin_customer_id}}\",\n    \"companyName\": \"John's Widgets\",\n    \"companyEmail\": \"johndoe@example.com\",\n    \"addressLine1\": \"987 Park Central East\",\n    \"city\": \"Austin\",\n    \"country\": \"United States\",\n    \"state\": \"Texas\",\n    \"zipCode\": \"78726\",\n    \"channelId\": {{storefront_channel_id}}\n}"
 							}
 						},
 						"url": {
@@ -510,8 +510,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!,\n    $channelId: Int\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password,\n            channelId: $channelId\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\",\n    \"channelId\": {{storefront_channel_id}}\n}"
 							}
 						},
 						"url": {
@@ -603,8 +603,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"{{junior_email}}\",\n    \"password\": \"{{junior_password}}\"\n}"
+								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!,\n    $channelId: Int\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password,\n            channelId: $channelId\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"{{junior_email}}\",\n    \"password\": \"{{junior_password}}\",\n    \"channelId\": {{storefront_channel_id}}\n}"
 							}
 						},
 						"url": {
@@ -5325,80 +5325,6 @@
 			"name": "Payments/Receipts",
 			"item": [
 				{
-					"name": "Get Payments",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is not an error', () => {",
-									"    pm.response.to.not.be.error;",
-									"    pm.response.to.not.have.jsonBody(\"errors\");",
-									"});",
-									"pm.test('Response is JSON with data', () => {",
-									"    pm.response.to.have.jsonBody(\"data\");",
-									"});",
-									"",
-									"const result = pm.response.json().data?.invoicePayments;",
-									"pm.test('Total count includes at least one payment', () => {",
-									"    pm.expect(",
-									"        result?.totalCount",
-									"    ).to.be.greaterThan(0);",
-									"});",
-									"",
-									"let firstPayment = null;",
-									"if (Array.isArray(result?.edges)) {",
-									"    firstPayment = result.edges[0]?.node;",
-									"}",
-									"pm.test('Response includes at least one payment with an ID', () => {",
-									"    pm.expect(",
-									"        firstPayment?.id",
-									"    ).to.be.a('string');",
-									"});",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query GetPayments(\n    $limit: Int,\n    $after: String\n) {\n    invoicePayments(\n        first: $limit,\n        after: $after\n    ) {\n        pageInfo {\n            hasNextPage\n            hasPreviousPage\n            startCursor\n            endCursor\n        }\n        totalCount\n        edges {\n            node {\n                id\n                createdAt\n                totalCode\n                totalAmount\n                payerName\n                processingStatus\n                companyId\n                companyName\n                paymentReceiptSet {\n                    edges {\n                        node {\n                            id\n                            createdAt\n                            customerId\n                            totalCode\n                            totalAmount\n                            payerName\n                            paymentId\n                            paymentType\n                            receiptLineSet {\n                                edges {\n                                    node {\n                                        id\n                                        createdAt\n                                        customerId\n                                        receiptId\n                                        paymentId\n                                        invoiceId\n                                        invoiceNumber\n                                        amount\n                                        paymentType\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"limit\": 5,\n    \"after\": null\n}"
-							}
-						},
-						"url": {
-							"raw": "https://api-b2b.bigcommerce.com/graphql",
-							"protocol": "https",
-							"host": [
-								"api-b2b",
-								"bigcommerce",
-								"com"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Invoice Receipt Lines",
 					"event": [
 						{
@@ -5477,80 +5403,6 @@
 		{
 			"name": "Payments/Receipts (Automated)",
 			"item": [
-				{
-					"name": "Get Payments",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response is not an error', () => {",
-									"    pm.response.to.not.be.error;",
-									"    pm.response.to.not.have.jsonBody(\"errors\");",
-									"});",
-									"pm.test('Response is JSON with data', () => {",
-									"    pm.response.to.have.jsonBody(\"data\");",
-									"});",
-									"",
-									"const result = pm.response.json().data?.invoicePayments;",
-									"pm.test('Total count includes at least one payment', () => {",
-									"    pm.expect(",
-									"        result?.totalCount",
-									"    ).to.be.greaterThan(0);",
-									"});",
-									"",
-									"let firstPayment = null;",
-									"if (Array.isArray(result?.edges)) {",
-									"    firstPayment = result.edges[0]?.node;",
-									"}",
-									"pm.test('Response includes at least one payment with an ID', () => {",
-									"    pm.expect(",
-									"        firstPayment?.id",
-									"    ).to.be.a('string');",
-									"});",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query GetPayments(\n    $limit: Int,\n    $after: String\n) {\n    invoicePayments(\n        first: $limit,\n        after: $after\n    ) {\n        pageInfo {\n            hasNextPage\n            hasPreviousPage\n            startCursor\n            endCursor\n        }\n        totalCount\n        edges {\n            node {\n                id\n                createdAt\n                totalCode\n                totalAmount\n                payerName\n                processingStatus\n                companyId\n                companyName\n                paymentReceiptSet {\n                    edges {\n                        node {\n                            id\n                            createdAt\n                            customerId\n                            totalCode\n                            totalAmount\n                            payerName\n                            paymentId\n                            paymentType\n                            receiptLineSet {\n                                edges {\n                                    node {\n                                        id\n                                        createdAt\n                                        customerId\n                                        receiptId\n                                        paymentId\n                                        invoiceId\n                                        invoiceNumber\n                                        amount\n                                        paymentType\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"limit\": 5,\n    \"after\": null\n}"
-							}
-						},
-						"url": {
-							"raw": "https://api-b2b.bigcommerce.com/graphql",
-							"protocol": "https",
-							"host": [
-								"api-b2b",
-								"bigcommerce",
-								"com"
-							],
-							"path": [
-								"graphql"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get Invoice Receipt Lines",
 					"event": [
@@ -5694,8 +5546,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Super Admin Email>\",\n    \"password\": \"<Super Admin Password>\"\n}"
+								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!,\n    $channelId: Int\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password,\n            channelId: $channelId\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Super Admin Email>\",\n    \"password\": \"<Super Admin Password>\",\n    \"channelId\": <Channel ID>\n}"
 							}
 						},
 						"url": {
@@ -6058,8 +5910,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
-								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Super Admin Email>\",\n    \"password\": \"<Super Admin Password>\"\n}"
+								"query": "mutation LogIn(\n    $storeHash: String!,\n    $email: String!,\n    $password: String!,\n    $channelId: Int\n) {\n    login(\n        loginData: {\n            storeHash: $storeHash,\n            email: $email,\n            password: $password,\n            channelId: $channelId\n        }\n    ) {\n        result {\n            token\n            user {\n                id\n                bcId\n                firstName\n                lastName\n                email\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"storeHash\": \"{{store_hash}}\",\n    \"email\": \"<Super Admin Email>\",\n    \"password\": \"<Super Admin Password>\",\n    \"channelId\": {{storefront_channel_id}}\n}"
 							}
 						},
 						"url": {
