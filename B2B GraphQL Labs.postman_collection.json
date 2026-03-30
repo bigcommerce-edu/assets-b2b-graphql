@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "b34dbe1f-1b60-49d7-b4ad-c6fef7f5844a",
+    "_postman_id": "2b38a0c9-425f-438c-b40c-2a82aeed69ed",
     "name": "B2B GraphQL Labs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "5974844"
@@ -2541,7 +2541,7 @@
               "mode": "graphql",
               "graphql": {
                 "query": "mutation GetQuoteCheckout(\n    $id: Int!,\n    $storeHash: String!,\n    $uuid: String!\n) {\n    quoteCheckout(\n        id: $id,\n        storeHash: $storeHash,\n        uuid: $uuid\n    ) {\n        quoteCheckout {\n            checkoutUrl\n            cartId\n            cartUrl\n        }\n    }\n}",
-                "variables": "{\n    \"id\": <Quote ID>,\n    \"storeHash\": \"{{store_hash}}\",\n    \"uuid\": <Quote UUID>\n}"
+                "variables": "{\n    \"id\": <Quote ID>,\n    \"storeHash\": \"{{store_hash}}\",\n    \"uuid\": \"<Quote UUID>\"\n}"
               }
             },
             "url": {
@@ -2606,7 +2606,7 @@
               "mode": "graphql",
               "graphql": {
                 "query": "query GetQuote(\n    $id: Int!,\n    $storeHash: String!,\n    $date: String!,\n    $uuid: String!\n) {\n    quote(\n        id: $id,\n        storeHash: $storeHash,\n        date: $date,\n        uuid: $uuid\n    ) {\n        id\n        createdAt\n        quoteNumber\n        quoteTitle\n        bcCustomerId\n        createdBy\n        createdByEmail\n        expiredAt\n        companyInfo {\n            companyId\n            companyName\n        }\n        status\n        salesRepStatus\n        customerStatus\n        subtotal\n        discount\n        grandTotal\n        shippingTotal\n        taxTotal\n        totalAmount\n        discountType\n        discountValue\n        cartId\n        cartUrl\n        checkoutUrl\n        orderId\n        bcOrderId\n        contactInfo\n        trackingHistory\n        notes\n        legalTerms\n        shippingMethod\n        billingAddress\n        shippingAddress\n        pdfTemplate\n        pdfLang\n        salesRepInfo {\n            salesRepName\n            salesRepEmail\n        }\n        productsList {\n            productId\n            variantId\n            sku\n            options\n            basePrice\n            discount\n            offeredPrice\n            quantity\n            imageUrl\n            productName\n            options\n            notes\n            purchaseHandled\n            productUrl\n            type\n            isFreeShipping\n            availability\n        }\n        quoteUrl\n    }\n}",
-                "variables": "{\n    \"id\": <Quote ID>,\n    \"storeHash\": \"{{store_hash}}\",\n    \"date\": \"<Timestamp>\",\n    \"uuid\": <Quote UUID>\n}"
+                "variables": "{\n    \"id\": <Quote ID>,\n    \"storeHash\": \"{{store_hash}}\",\n    \"date\": \"<Timestamp>\",\n    \"uuid\": \"<Quote UUID>\"\n}"
               }
             },
             "url": {
@@ -2814,7 +2814,7 @@
                   "pm.collectionVariables.unset('quote_created_at');",
                   "",
                   "pm.collectionVariables.set('quote_id', parseInt(quote?.id));",
-                  "pm.collectionVariables.set('quote_uuid', parseInt(quote?.uuid));",
+                  "pm.collectionVariables.set('quote_uuid', quote?.uuid);",
                   "pm.collectionVariables.set('quote_created_at', quote?.createdAt);",
                   ""
                 ],
@@ -3175,7 +3175,7 @@
               "mode": "graphql",
               "graphql": {
                 "query": "query GetQuote(\n    $id: Int!,\n    $storeHash: String!,\n    $date: String!,\n    $uuid: String!\n) {\n    quote(\n        id: $id,\n        storeHash: $storeHash,\n        date: $date,\n        uuid: $uuid\n    ) {\n        id\n        createdAt\n        quoteNumber\n        quoteTitle\n        bcCustomerId\n        createdBy\n        createdByEmail\n        expiredAt\n        companyInfo {\n            companyId\n            companyName\n        }\n        status\n        salesRepStatus\n        customerStatus\n        subtotal\n        discount\n        grandTotal\n        shippingTotal\n        taxTotal\n        totalAmount\n        discountType\n        discountValue\n        cartId\n        cartUrl\n        checkoutUrl\n        orderId\n        bcOrderId\n        contactInfo\n        trackingHistory\n        notes\n        legalTerms\n        shippingMethod\n        billingAddress\n        shippingAddress\n        pdfTemplate\n        pdfLang\n        salesRepInfo {\n            salesRepName\n            salesRepEmail\n        }\n        productsList {\n            productId\n            variantId\n            sku\n            options\n            basePrice\n            discount\n            offeredPrice\n            quantity\n            imageUrl\n            productName\n            options\n            notes\n            purchaseHandled\n            productUrl\n            type\n            isFreeShipping\n            availability\n        }\n        quoteUrl\n    }\n}",
-                "variables": "{\n    \"id\": {{quote_id}},\n    \"storeHash\": \"{{store_hash}}\",\n    \"date\": \"{{quote_created_at}}\",\n    \"uuid\": {{quote_uuid}}\n}"
+                "variables": "{\n    \"id\": {{quote_id}},\n    \"storeHash\": \"{{store_hash}}\",\n    \"date\": \"{{quote_created_at}}\",\n    \"uuid\": \"{{quote_uuid}}\"\n}"
               }
             },
             "url": {
