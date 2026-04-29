@@ -6,7 +6,7 @@ In this lab, you'll explore the common storefront tasks involved with managing a
 
 ### Prerequisites
 
-* A BigCommerce [sandbox store](https://docs.bigcommerce.com/developer/docs/start/about/sandboxes) or [trial store](https://www.bigcommerce.com/essentials/), or a full production store
+* A BigCommerce [sandbox store](https://docs.bigcommerce.com/docs/start/about/sandboxes) or [trial store](https://www.bigcommerce.com/essentials/), or a full production store
 * B2B Edition enabled in your store
 * [Postman](https://www.postman.com/) or a similar API client
 * An existing Postman environment, collection, and headers preset as configured in previous labs
