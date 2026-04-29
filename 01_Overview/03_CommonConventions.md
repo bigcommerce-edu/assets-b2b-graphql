@@ -219,5 +219,3 @@ query {
     }
 }
 ```
-
-[Next](../../Module02/01_CompaniesAndAddresses/01_CompaniesAndAddresses.md)

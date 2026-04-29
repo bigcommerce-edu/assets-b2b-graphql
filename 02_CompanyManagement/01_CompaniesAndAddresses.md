@@ -478,5 +478,3 @@ mutation DeleteAddress(
     }
 }
 ```
-
-[Next](../02_Users/02_Users.md)

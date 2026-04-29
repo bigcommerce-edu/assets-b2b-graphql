@@ -306,5 +306,3 @@ mutation GetInvoiceCheckout(
     "currency": "USD"
 }
 ```
-
-[Next](../03_PaymentsReceipts/03_PaymentsReceipts.md)
