@@ -6,7 +6,7 @@ In the previous lab, you built an API workflow to submit a quote from a storefro
 
 ### Prerequisites
 
-* A BigCommerce [sandbox store](https://docs.bigcommerce.com/developer/docs/start/about/sandboxes) or [trial store](https://www.bigcommerce.com/essentials/), or a full production store
+* A BigCommerce [sandbox store](https://docs.bigcommerce.com/developer/docs/overview/sandboxes) or [trial store](https://www.bigcommerce.com/essentials/), or a full production store
 * B2B Edition enabled in your store
 * [Postman](https://www.postman.com/) or a similar API client
 * An existing Postman environment, collection, and headers preset as configured in previous labs
