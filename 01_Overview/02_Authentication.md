@@ -137,5 +137,3 @@ POST https://api-b2b.bigcommerce.com/api/io/auth/customers/storefront
 ```javascript
 window.b2b.utils.user.getB2BToken()
 ```
-
-[Next](../03_CommonConventions/03_CommonConventions.md)

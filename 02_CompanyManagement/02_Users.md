@@ -332,5 +332,3 @@ mutation DeleteUser(
     }
 }
 ```
-
-[Next](../03_CreditPaymentTerms/03_CreditPaymentTerms.md)

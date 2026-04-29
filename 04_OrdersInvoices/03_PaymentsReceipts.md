@@ -328,5 +328,3 @@ query GetReceiptLine(
     }
 }
 ```
-
-[Next](../04_Lab_PostmanOrdersPayments/01_GetOrders/01_GetOrders.md)

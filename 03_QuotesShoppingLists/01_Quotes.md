@@ -664,5 +664,3 @@ mutation GetQuoteCheckout(
     }
 }
 ```
-
-[Next](../02_ShoppingLists/02_ShoppingLists.md)

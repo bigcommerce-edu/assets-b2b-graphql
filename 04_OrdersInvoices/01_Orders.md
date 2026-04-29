@@ -344,5 +344,3 @@ query GetOrderedProducts {
     }
 }
 ```
-
-[Next](../02_Invoices/02_Invoices.md)
