@@ -247,6 +247,7 @@ mutation CreateQuote(
     ) {
         quote {
             id
+            uuid
             createdAt
             quoteNumber
             quoteTitle
@@ -342,6 +343,7 @@ mutation CreateQuote(
         "quoteCreate": {
             "quote": {
                 "id": "334455",
+                "uuid": "123456789",
                 "createdAt": 1725560410,
                 "quoteNumber": "QN000023",
                 "quoteTitle": "Fall Stocking Quote",
@@ -369,6 +371,7 @@ query GetQuotes {
         edges {
             node {
                 id
+                uuid
                 createdAt
                 quoteNumber
                 quoteTitle
@@ -433,6 +436,7 @@ query GetQuotes {
                 {
                     "node": {
                         "id": "334455",
+                        "uuid": "123456789",
                         "createdAt": 1725560410,
                         "quoteNumber": "QN000023",
                         "quoteTitle": "Fall Stocking Quote",
@@ -538,16 +542,20 @@ query GetQuotes {
 }
 ```
 
+In addition to the previously required `id` and `createdAt` date, the quote's `uuid` is now required for retrieval of individual quotes and for `quoteCheckout`. Capture and store the `uuid` alongside the `id` and timestamp when the quote is created, so subsequent requests can reference it.
+
 **Get quote example:**
 
 ```
 query GetQuote(
     $id: Int!,
+    $uuid: String!,
     $storeHash: String!,
     $date: String!
 ) {
     quote(
         id: $id,
+        uuid: $uuid,
         storeHash: $storeHash,
         date: $date
     ) {
@@ -634,11 +642,13 @@ mutation AddQuoteMessage(
 ```
 mutation GetQuoteCheckout(
     $id: Int!,
-    $storeHash: String!
+    $storeHash: String!,
+    $uuid: String!
 ) {
     quoteCheckout(
         id: $id,
-        storeHash: $storeHash
+        storeHash: $storeHash,
+        uuid: $uuid
     ) {
         quoteCheckout {
             checkoutUrl

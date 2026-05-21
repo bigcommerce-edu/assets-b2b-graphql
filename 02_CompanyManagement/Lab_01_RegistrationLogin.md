@@ -40,10 +40,11 @@ Runs the `customerCreate` mutation to register a BigCommerce customer (with pass
 Runs the `companyCreate` mutation to register a B2B company for that customer.
 
 * **Enter** the customer `id` from **Create Customer** as `customerId` (as a string in JSON).
+* **Enter** the customer email from **Create Customer** as `customerEmail` (required alongside `customerId`).
 * **Adjust** company and address fields in the variables if you like.
 * **Verify** in the B2B Edition control panel that the company appears (for example, pending or approved depending on your store settings).
 
-**AUTOMATION:** The automated version of the request should use `{{admin_customer_id}}` for `customerId`.
+**AUTOMATION:** The automated version of the request should use `{{admin_customer_id}}` for `customerId` and `{{admin_email}}` for `customerEmail`.
 
 ### Login
 
