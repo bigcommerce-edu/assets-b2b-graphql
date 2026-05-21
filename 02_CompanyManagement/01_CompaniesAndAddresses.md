@@ -68,10 +68,13 @@ mutation CreateCustomer(
 
 **Create company mutation:**
 
+Both `customerId` and `customerEmail` are required to use the `companyCreate` mutation.
+
 ```
 mutation CreateCompany(
     $storeHash: String!,
     $customerId: String!,
+    $customerEmail: String!,
     $companyName: String!,
     $companyEmail: String,
     $addressLine1: String!,
@@ -84,6 +87,7 @@ mutation CreateCompany(
         companyData: {
             storeHash: $storeHash,
             customerId: $customerId,
+            customerEmail: $customerEmail,
             companyName: $companyName,
             companyEmail: $companyEmail,
             addressLine1: $addressLine1,
@@ -107,6 +111,7 @@ mutation CreateCompany(
 {
     "storeHash": "aaaaabbbbb",
     "customerId": "27",
+    "customerEmail": "johndoe@example.com",
     "companyName": "John's Widgets",
     "companyEmail": "johnswidgets@example.com",
     "addressLine1": "123 Park Central",

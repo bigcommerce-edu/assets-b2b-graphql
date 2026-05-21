@@ -53,7 +53,7 @@ Runs the `quoteCreate` mutation with addresses, contact info, currency, store ha
 * **Replace** placeholder emails, `<Company ID>`, `<Total Price>`, currency fields (`<Token>`, `<Code>`, and so on), and the single `productList` entry with values from **Search Products** (you can duplicate the object in JSON if you want two lines).
 * **Verify** the new quote in the B2B Edition control panel or storefront quote experience, as appropriate for your store.
 
-**AUTOMATION:** The automated version of the request should use `{{products_price_total}}` for `subtotal` and `grandTotal`, `{{b2b_logged_in_email}}` for buyer email fields, `{{b2b_logged_in_company_id}}` for `companyId`, the `product1_*` and `product2_*` variables for two line items, and the `currency_*` collection variables for the `currency` input. The request should save a `quote_id` and `quote_created_at` for **Export Quote PDF**, **Add Message to Quote**, **Get Quote Checkout**, and **Get Quote**.
+**AUTOMATION:** The automated version of the request should use `{{products_price_total}}` for `subtotal` and `grandTotal`, `{{b2b_logged_in_email}}` for buyer email fields, `{{b2b_logged_in_company_id}}` for `companyId`, the `product1_*` and `product2_*` variables for two line items, and the `currency_*` collection variables for the `currency` input. The request should save `quote_id`, `quote_uuid`, and `quote_created_at` for **Export Quote PDF**, **Add Message to Quote**, **Get Quote Checkout**, and **Get Quote**.
 
 ### Get Quotes
 
@@ -84,17 +84,17 @@ Runs `quoteUpdate` with a `message` (buyer note) on an existing quote.
 
 Runs the `quoteCheckout` mutation to retrieve checkout-related URLs and cart identifiers for a quote.
 
-* **Enter** the quote `id`.
+* **Enter** the quote `id` and `uuid` (both are now required).
 * **Observe** `checkoutUrl`, `cartId`, and `cartUrl` in `data.quoteCheckout.quoteCheckout`.
 * **Record** the `checkoutUrl` in the response and use this in a browser to initiate a checkout for the quote.
 
-**AUTOMATION:** The automated version of the request should use `{{quote_id}}` from the previous **Create Quote** request.
+**AUTOMATION:** The automated version of the request should use `{{quote_id}}` and `{{quote_uuid}}` from the previous **Create Quote** request.
 
 ### Get Quote
 
-Runs the `quote` query for a single quote by `id`, `storeHash`, and `date` (the quote’s creation context; use the same timestamp you use for the PDF export).
+Runs the `quote` query for a single quote by `id`, `uuid`, `storeHash`, and `date` (the quote’s creation context; use the same timestamp you use for the PDF export). The `uuid` is now required alongside `id` and `date`.
 
-* **Enter** `id` and `date` from **Create Quote**.
+* **Enter** `id`, `uuid`, and `date` from **Create Quote**.
 * **Observe** full quote detail including `status`, `productsList`, addresses, and `checkoutUrl`.
 
-**AUTOMATION:** The automated version of the request should use `{{quote_id}}`and `{{quote_created_at}}` from the previous **Create Quote** request.
+**AUTOMATION:** The automated version of the request should use `{{quote_id}}`, `{{quote_uuid}}`, and `{{quote_created_at}}` from the previous **Create Quote** request.
