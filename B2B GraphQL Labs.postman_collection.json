@@ -204,6 +204,11 @@
                   "        customer?.entityId",
                   "    ).to.be.a('number');",
                   "});",
+                  "pm.test('Response includes an email', () => {",
+                  "    pm.expect(",
+                  "        customer?.email",
+                  "    ).to.be.a('string');",
+                  "});",
                   "",
                   "const token = pm.response.json().data?.login?.customerAccessToken?.value;",
                   "pm.test('Response includes a token', () => {",
@@ -258,7 +263,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation Login(\n    $email: String!,\n    $password: String!\n) {\n    login(\n        email: $email,\n        password: $password\n    ) {\n        result\n        customer {\n            entityId\n            firstName\n            lastName\n        }\n        customerAccessToken {\n            value\n            expiresAt\n        }\n    }\n}",
+                "query": "mutation Login(\n    $email: String!,\n    $password: String!\n) {\n    login(\n        email: $email,\n        password: $password\n    ) {\n        result\n        customer {\n            entityId\n            email\n            firstName\n            lastName\n        }\n        customerAccessToken {\n            value\n            expiresAt\n        }\n    }\n}",
                 "variables": "{\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\"\n}"
               }
             },
@@ -453,7 +458,72 @@
           "response": []
         },
         {
-          "name": "B2B User Company",
+          "name": "B2B GQL Customer Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.customerInfo;",
+                  "pm.test('Response includes a user ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.userInfo?.id",
+                  "    ).to.be.a('number');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\n  customerInfo {\n    userInfo {\n      id\n    }\n  }\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B GQL User Company",
           "event": [
             {
               "listen": "test",
@@ -475,7 +545,8 @@
                   "});"
                 ],
                 "type": "text/javascript",
-                "packages": {}
+                "packages": {},
+                "requests": {}
               }
             }
           ],
