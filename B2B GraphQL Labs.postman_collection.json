@@ -745,7 +745,7 @@
               "mode": "graphql",
               "graphql": {
                 "query": "mutation RegisterCustomer(\n    $firstName: String!,\n    $lastName: String!,\n    $email: String!,\n    $password: String!\n) {\n  customer {\n    registerCustomer(\n      input: {\n        firstName: $firstName,\n        lastName: $lastName,\n        email: $email,\n        password: $password\n      }\n    ) {\n      customer {\n        entityId\n      }\n      errors {\n        ... on EmailAlreadyInUseError {\n            message\n        }\n        ... on AccountCreationDisabledError {\n            message\n        }\n        ... on CustomerRegistrationError {\n            message\n        }\n        ... on ValidationError {\n            message\n        }\n      }\n    }\n  }\n}",
-                "variables": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\"\n}"
+                "variables": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
               }
             },
             "url": {
