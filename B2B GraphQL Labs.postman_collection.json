@@ -1,13 +1,1329 @@
 {
   "info": {
-    "_postman_id": "2b38a0c9-425f-438c-b40c-2a82aeed69ed",
+    "_postman_id": "dcf22baf-eea7-46da-ac40-b0edb2c775a1",
     "name": "B2B GraphQL Labs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "5974844"
+    "_exporter_id": "5974844",
+    "_collection_link": "https://go.postman.co/collection/5974844-dcf22baf-eea7-46da-ac40-b0edb2c775a1?source=collection_link"
   },
   "item": [
     {
-      "name": "Registration/Login",
+      "name": "BC Registration/Login",
+      "item": [
+        {
+          "name": "BC REST Create Private Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response is not an error\", () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test(\"Response is JSON with data\", () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "pm.test(\"Response includes token\", () => {",
+                  "    pm.expect(pm.response.json().data?.token).to.be.a('string');",
+                  "});",
+                  "",
+                  "const token = pm.response.json().data?.token;",
+                  "if (token) {",
+                  "    pm.environment.unset(\"private_storefront_token\");",
+                  "    pm.environment.set(\"private_storefront_token\", token);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Token",
+                "value": "{{v3_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"channel_id\": {{storefront_channel_id}},\n    \"expires_at\": 2147483647,\n    \"scopes\": [\n        \"Unauthenticated\",\n        \"Customer\",\n        \"B2B\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.bigcommerce.com/stores/{{store_hash}}/v3/storefront/api-token-private",
+              "protocol": "https",
+              "host": [
+                "api",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "stores",
+                "{{store_hash}}",
+                "v3",
+                "storefront",
+                "api-token-private"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Register Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "",
+                  "const customer = pm.response.json().data?.customer?.registerCustomer?.customer;",
+                  "pm.test('Response includes a customer ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.entityId",
+                  "    ).to.be.a('number');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation RegisterCustomer(\n    $firstName: String!,\n    $lastName: String!,\n    $email: String!,\n    $password: String!\n) {\n  customer {\n    registerCustomer(\n      input: {\n        firstName: $firstName,\n        lastName: $lastName,\n        email: $email,\n        password: $password\n      }\n    ) {\n      customer {\n        entityId\n      }\n      errors {\n        ... on EmailAlreadyInUseError {\n            message\n        }\n        ... on AccountCreationDisabledError {\n            message\n        }\n        ... on CustomerRegistrationError {\n            message\n        }\n        ... on ValidationError {\n            message\n        }\n      }\n    }\n  }\n}",
+                "variables": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\"\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Customer Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "const result = pm.response.json().data?.login?.result;",
+                  "pm.test('Login was successful', () => {",
+                  "    pm.expect(result).to.equal(\"success\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.login?.customer;",
+                  "pm.test('Response includes a customer ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.entityId",
+                  "    ).to.be.a('number');",
+                  "});",
+                  "pm.test('Response includes an email', () => {",
+                  "    pm.expect(",
+                  "        customer?.email",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "const token = pm.response.json().data?.login?.customerAccessToken?.value;",
+                  "pm.test('Response includes a token', () => {",
+                  "    pm.expect(",
+                  "        token",
+                  "    ).to.be.a('string');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation Login(\n    $email: String!,\n    $password: String!\n) {\n    login(\n        email: $email,\n        password: $password\n    ) {\n        result\n        customer {\n            entityId\n            email\n            firstName\n            lastName\n        }\n        customerAccessToken {\n            value\n            expiresAt\n        }\n    }\n}",
+                "variables": "{\n    \"email\": \"<Email>\",\n    \"password\": \"<Password>\"\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Register Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "const result = pm.response.json().data?.company?.registerCompany;",
+                  "const companyId = result?.entityId;",
+                  "pm.test('Registration was successful', () => {",
+                  "    pm.expect(companyId).to.be.a('number');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Bc-Customer-Access-Token",
+                "value": "<Access Token>",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation RegisterCompany(\n    $name: String!,\n    $email: String!,\n    $phone: String!,\n    $address: AddCompanyAddressInput!\n) {\n  company {\n    registerCompany(input: {\n        name: $name,\n        email: $email,\n        phone: $phone,\n        address: $address\n    }) {\n        entityId\n        status\n        errors {\n            ... on ValidationError {\n                path\n                message\n            }\n        }\n    }\n  }\n}",
+                "variables": "{\n    \"name\": \"John's Widgets\",\n    \"email\": \"johndoe@example.com\",\n    \"phone\": \"1112223333\",\n    \"address\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"address1\": \"987 Park Central East\",\n        \"city\": \"Austin\",\n        \"countryCode\": \"US\",\n        \"stateOrProvince\": \"Texas\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B REST Get B2B Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response is not an error\", () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test(\"Response is JSON with data\", () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const tokens = pm.response.json().data?.token; ",
+                  "pm.test(\"Response includes token\", () => {",
+                  "    pm.expect(tokens).to.be.a('array');",
+                  "    pm.expect(tokens).to.not.be.empty;",
+                  "    pm.expect(tokens[0]).to.be.a('string');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Token",
+                "value": "{{v3_token}}",
+                "type": "text"
+              },
+              {
+                "key": "X-Store-Hash",
+                "value": "{{store_hash}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": <Customer ID>,\n    \"channelId\": {{storefront_channel_id}},\n        \"customerAccessToken\": {\n        \"expires_at\": \"<Expires At>\",\n        \"value\": \"<Customer Access Token>\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/api/io/auth/customers/storefront",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "api",
+                "io",
+                "auth",
+                "customers",
+                "storefront"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B GQL Customer Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.customerInfo;",
+                  "pm.test('Response includes a user ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.userInfo?.id",
+                  "    ).to.be.a('number');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\n  customerInfo {\n    userInfo {\n      id\n    }\n  }\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B GQL User Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const userCompany = pm.response.json().data?.userCompany;",
+                  "pm.test('Response includes a company ID', () => {",
+                  "    pm.expect(",
+                  "        userCompany?.id",
+                  "    ).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetUserCompany(\n    $userId: Int!\n) {\n    userCompany(\n        userId: $userId\n    ) {\n        id\n        companyName\n        companyStatus\n        addressLine1\n        addressLine2\n        city\n        state\n        zipCode\n        country\n    }\n}",
+                "variables": "{\n    \"userId\": <User ID>\n}"
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "This registration/login flow uses the main BigCommerce GraphQL Storefront API and is an _alternative_ to the B2B GraphQL registration/login flow.\n\nThis flow requires a private token to be generated for the main GQL Storefront API and includes a request to exchange a customer access tokekn for a B2B user token."
+    },
+    {
+      "name": "BC Registration/Login (Automated)",
+      "item": [
+        {
+          "name": "BC REST Create Private Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response is not an error\", () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test(\"Response is JSON with data\", () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "pm.test(\"Response includes token\", () => {",
+                  "    pm.expect(pm.response.json().data?.token).to.be.a('string');",
+                  "});",
+                  "",
+                  "const token = pm.response.json().data?.token;",
+                  "if (token) {",
+                  "    pm.environment.unset(\"private_storefront_token\");",
+                  "    pm.environment.set(\"private_storefront_token\", token);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Token",
+                "value": "{{v3_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"channel_id\": {{storefront_channel_id}},\n    \"expires_at\": 2147483647,\n    \"scopes\": [\n        \"Unauthenticated\",\n        \"Customer\",\n        \"B2B\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.bigcommerce.com/stores/{{store_hash}}/v3/storefront/api-token-private",
+              "protocol": "https",
+              "host": [
+                "api",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "stores",
+                "{{store_hash}}",
+                "v3",
+                "storefront",
+                "api-token-private"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Register Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "",
+                  "const customer = pm.response.json().data?.customer?.registerCustomer?.customer;",
+                  "pm.test('Response includes a customer ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.entityId",
+                  "    ).to.be.a('number');",
+                  "});",
+                  "",
+                  "pm.collectionVariables.unset('admin_customer_id');",
+                  "pm.collectionVariables.set('admin_customer_id', customer?.entityId);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation RegisterCustomer(\n    $firstName: String!,\n    $lastName: String!,\n    $email: String!,\n    $password: String!\n) {\n  customer {\n    registerCustomer(\n      input: {\n        firstName: $firstName,\n        lastName: $lastName,\n        email: $email,\n        password: $password\n      }\n    ) {\n      customer {\n        entityId\n      }\n      errors {\n        ... on EmailAlreadyInUseError {\n            message\n        }\n        ... on AccountCreationDisabledError {\n            message\n        }\n        ... on CustomerRegistrationError {\n            message\n        }\n        ... on ValidationError {\n            message\n        }\n      }\n    }\n  }\n}",
+                "variables": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "const result = pm.response.json().data?.login?.result;",
+                  "pm.test('Login was successful', () => {",
+                  "    pm.expect(result).to.equal(\"success\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.login?.customer;",
+                  "pm.test('Response includes a customer ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.entityId",
+                  "    ).to.be.a('number');",
+                  "});",
+                  "pm.test('Response includes an email', () => {",
+                  "    pm.expect(",
+                  "        customer?.email",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "const token = pm.response.json().data?.login?.customerAccessToken?.value;",
+                  "pm.test('Response includes a token', () => {",
+                  "    pm.expect(",
+                  "        token",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "const tokenExpires = pm.response.json().data?.login?.customerAccessToken?.expiresAt;",
+                  "pm.test('Response includes a token expiration', () => {",
+                  "    pm.expect(",
+                  "        tokenExpires",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "pm.environment.unset('customer_access_token');",
+                  "pm.environment.unset('customer_access_token_exp');",
+                  "pm.environment.unset('b2b_logged_in_email');",
+                  "pm.environment.unset('bc_logged_in_id');",
+                  "",
+                  "pm.environment.set('customer_access_token', token);",
+                  "pm.environment.set('customer_access_token_exp', tokenExpires);",
+                  "pm.environment.set('b2b_logged_in_email', customer?.email);",
+                  "pm.environment.set('bc_logged_in_id', customer?.entityId);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation Login(\n    $email: String!,\n    $password: String!\n) {\n    login(\n        email: $email,\n        password: $password\n    ) {\n        result\n        customer {\n            entityId\n            email\n            firstName\n            lastName\n        }\n        customerAccessToken {\n            value\n            expiresAt\n        }\n    }\n}",
+                "variables": "{\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Junior Buyer Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "const result = pm.response.json().data?.login?.result;",
+                  "pm.test('Login was successful', () => {",
+                  "    pm.expect(result).to.equal(\"success\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.login?.customer;",
+                  "pm.test('Response includes a customer ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.entityId",
+                  "    ).to.be.a('number');",
+                  "});",
+                  "pm.test('Response includes an email', () => {",
+                  "    pm.expect(",
+                  "        customer?.email",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "const token = pm.response.json().data?.login?.customerAccessToken?.value;",
+                  "pm.test('Response includes a token', () => {",
+                  "    pm.expect(",
+                  "        token",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "const tokenExpires = pm.response.json().data?.login?.customerAccessToken?.expiresAt;",
+                  "pm.test('Response includes a token expiration', () => {",
+                  "    pm.expect(",
+                  "        tokenExpires",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "pm.environment.unset('customer_access_token');",
+                  "pm.environment.unset('customer_access_token_exp');",
+                  "pm.environment.unset('b2b_logged_in_email');",
+                  "pm.environment.unset('bc_logged_in_id');",
+                  "",
+                  "pm.environment.set('customer_access_token', token);",
+                  "pm.environment.set('customer_access_token_exp', tokenExpires);",
+                  "pm.environment.set('b2b_logged_in_email', customer?.email);",
+                  "pm.environment.set('bc_logged_in_id', customer?.entityId);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation Login(\n    $email: String!,\n    $password: String!\n) {\n    login(\n        email: $email,\n        password: $password\n    ) {\n        result\n        customer {\n            entityId\n            email\n            firstName\n            lastName\n        }\n        customerAccessToken {\n            value\n            expiresAt\n        }\n    }\n}",
+                "variables": "{\n    \"email\": \"{{junior_email}}\",\n    \"password\": \"{{junior_password}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BC GQL Register Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error",
+                  "    pm.response.to.not.have.jsonBody(\"errors\")",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\")",
+                  "});",
+                  "",
+                  "const result = pm.response.json().data?.company?.registerCompany;",
+                  "const companyId = result?.entityId;",
+                  "pm.test('Registration was successful', () => {",
+                  "    pm.expect(companyId).to.be.a('number');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableCookies": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{private_storefront_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Bc-Customer-Access-Token",
+                "value": "{{customer_access_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation RegisterCompany(\n    $name: String!,\n    $email: String!,\n    $phone: String!,\n    $address: AddCompanyAddressInput!\n) {\n  company {\n    registerCompany(input: {\n        name: $name,\n        email: $email,\n        phone: $phone,\n        address: $address\n    }) {\n        entityId\n        status\n        errors {\n            ... on ValidationError {\n                path\n                message\n            }\n        }\n    }\n  }\n}",
+                "variables": "{\n    \"name\": \"John's Widgets\",\n    \"email\": \"johndoe@example.com\",\n    \"phone\": \"1112223333\",\n    \"address\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"address1\": \"987 Park Central East\",\n        \"city\": \"Austin\",\n        \"countryCode\": \"US\",\n        \"stateOrProvince\": \"Texas\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "https://store-{{store_hash}}-{{storefront_channel_id}}.mybigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "store-{{store_hash}}-{{storefront_channel_id}}",
+                "mybigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B REST Get B2B Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response is not an error\", () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test(\"Response is JSON with data\", () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const tokens = pm.response.json().data?.token; ",
+                  "pm.test(\"Response includes token\", () => {",
+                  "    pm.expect(tokens).to.be.a('array');",
+                  "    pm.expect(tokens).to.not.be.empty;",
+                  "    pm.expect(tokens[0]).to.be.a('string');",
+                  "});",
+                  "",
+                  "pm.environment.unset('b2b_storefront_token');",
+                  "",
+                  "pm.environment.set('b2b_storefront_token', tokens[0]);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Token",
+                "value": "{{v3_token}}",
+                "type": "text"
+              },
+              {
+                "key": "X-Store-Hash",
+                "value": "{{store_hash}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": {{bc_logged_in_id}},\n    \"channelId\": {{storefront_channel_id}},\n        \"customerAccessToken\": {\n        \"expires_at\": \"{{customer_access_token_exp}}\",\n        \"value\": \"{{customer_access_token}}\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/api/io/auth/customers/storefront",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "api",
+                "io",
+                "auth",
+                "customers",
+                "storefront"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B GQL Customer Info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const customer = pm.response.json().data?.customerInfo;",
+                  "pm.test('Response includes a user ID', () => {",
+                  "    pm.expect(",
+                  "        customer?.userInfo?.id",
+                  "    ).to.be.a('number');",
+                  "});",
+                  "",
+                  "pm.environment.unset('b2b_logged_in_id');",
+                  "",
+                  "pm.environment.set('b2b_logged_in_id', customer?.userInfo?.id);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\n  customerInfo {\n    userInfo {\n      id\n    }\n  }\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "B2B GQL User Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response is not an error', () => {",
+                  "    pm.response.to.not.be.error;",
+                  "    pm.response.to.not.have.jsonBody(\"errors\");",
+                  "});",
+                  "pm.test('Response is JSON with data', () => {",
+                  "    pm.response.to.have.jsonBody(\"data\");",
+                  "});",
+                  "",
+                  "const userCompany = pm.response.json().data?.userCompany;",
+                  "pm.test('Response includes a company ID', () => {",
+                  "    pm.expect(",
+                  "        userCompany?.id",
+                  "    ).to.be.a('string');",
+                  "});",
+                  "",
+                  "pm.environment.unset('b2b_logged_in_company_id');",
+                  "pm.environment.set('b2b_logged_in_company_id', parseInt(userCompany?.id));",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetUserCompany(\n    $userId: Int!\n) {\n    userCompany(\n        userId: $userId\n    ) {\n        id\n        companyName\n        companyStatus\n        addressLine1\n        addressLine2\n        city\n        state\n        zipCode\n        country\n    }\n}",
+                "variables": "{\n    \"userId\": {{b2b_logged_in_id}}\n}"
+              }
+            },
+            "url": {
+              "raw": "https://api-b2b.bigcommerce.com/graphql",
+              "protocol": "https",
+              "host": [
+                "api-b2b",
+                "bigcommerce",
+                "com"
+              ],
+              "path": [
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "This registration/login flow uses the main BigCommerce GraphQL Storefront API and is an _alternative_ to the B2B GraphQL registration/login flow.\n\nThis flow requires a private token to be generated for the main GQL Storefront API and includes a request to exchange a customer access tokekn for a B2B user token."
+    },
+    {
+      "name": "B2B Registration/Login",
       "item": [
         {
           "name": "Create Customer",
@@ -292,10 +1608,11 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "This registration/login flow uses the B2B GraphQL API and is an _alternative_ to the BC registration/login flow."
     },
     {
-      "name": "Registration/Login (Automated)",
+      "name": "B2B Registration/Login (Automated)",
       "item": [
         {
           "name": "Create Customer",
@@ -689,7 +2006,8 @@
           },
           "response": []
         }
-      ]
+      ],
+      "description": "This registration/login flow uses the B2B GraphQL API and is an _alternative_ to the BC registration/login flow."
     },
     {
       "name": "Addresses",

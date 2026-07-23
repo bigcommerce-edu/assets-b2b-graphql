@@ -16,6 +16,7 @@
 | --- | --- |
 | store_hash | Your store hash |
 | storefront_channel_id | The channel ID of the storefront you will be working with.If you are on a single-storefront implementation, the default channel ID will always be 1. |
+| v3_token | A REST Admin API token with `Storefront API tokens` and `B2B Edition` scopes, used by the **BC Registration/Login** flow to create a private Storefront API token and exchange a customer access token for a B2B token. |
 
 3. **Create** a new collection and give it an appropriate name, such as "B2B GraphQL."
 4. **Select** your new environment from the environment drop-down at the top of the Postman interface.

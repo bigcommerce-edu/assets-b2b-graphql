@@ -66,6 +66,8 @@ mutation CreateCustomer(
 }
 ```
 
+**Note:** The `registerCustomer` mutation in the BigCommerce GraphQL Storefront API can be used instead of `customerCreate`. See [Authentication](../01_Overview/02_Authentication.md) for the credentials required with that API.
+
 **Create company mutation:**
 
 Both `customerId` and `customerEmail` are required to use the `companyCreate` mutation.
@@ -136,6 +138,8 @@ mutation CreateCompany(
     }
 }
 ```
+
+**Note:** The `registerCompany` mutation in the BigCommerce GraphQL Storefront API can be used instead of `companyCreate`. Unlike `companyCreate`, `registerCompany` requires a logged-in customer context. See [Authentication](../01_Overview/02_Authentication.md) for details.
 
 **Example login mutation:**
 
